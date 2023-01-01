@@ -21,12 +21,12 @@ class GamePlay:
         name = input("Please Enter a Name:\n")
         self.player = Player(name, 10000)
         print("Welcome,", self.player.getName())
+    def lines(self):print("----------------------------------")
     def HUD(self):
-        def lines():print("----------------------------------")
         system('clear')
-        lines()
+        self.lines()
         for i in self.shareList: print(i.name + ": Bid:", f'${i.bid/100:.2f}',"| Offer:", f'${i.offer/100:.2f}',"| Vol:" , i.vol/100)
-        lines()
+        self.lines()
     def options(self):
         choice = input("Would you like to, Buy[1], Sell[2], Wait Until Tomorrow[Enter] or Statistics[3]\n")
         if choice == "1" or choice == "2" or choice == "3" or choice == "":
@@ -39,3 +39,15 @@ class GamePlay:
                 if choice == 3: pass #Stats 
                 else:pass
         else: print("Please enter a valid option.")
+    def buy(self):
+        counter = 1
+        self.lines()
+        print("                  BUY")
+        for i in self.shareList:
+            print("Name:",i.name,"|","Press", counter, "to buy.")
+            counter += 1
+        min_counter = 1 # user input validation requirement
+        max_counter = counter # user input validation requirement
+        self.lines()
+        toBuy = input("What share would you like to buy?\n")
+        
