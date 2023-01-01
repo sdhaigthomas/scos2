@@ -1,4 +1,5 @@
 from random import randint as rnd
+
 class Shares:
     def __init__(self, name, bid, offer, vol, sector):
         self.name = name
@@ -7,10 +8,14 @@ class Shares:
         self.vol = vol
         self.sector = sector
 
-    def stockPriceChange(vol, price):
-        price += rnd(vol * -1, vol)
+    def stockPriceChange(self, vol, price):
+        negitiveVol = vol * -1
+        price += rnd(negitiveVol, vol)
+        if price <= 1:
+            price = 1
         return price
-    def offerGenorator(self, price):
-        price += rnd(1,2)
+
+    def offerGenerator(self, price):
+        price = price * 1.10
         return price
-        
+    
