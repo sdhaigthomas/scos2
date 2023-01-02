@@ -45,23 +45,30 @@ class GamePlay:
         else: print("Please enter a valid option.")
 
     def buy(self):
-        displayCounter = 1
+        counter = 1
+        toBuy = None
         self.lines()
         print("                  BUY")
         for i in self.shareList:
-            print("Name:",i.name,"|","Press", displayCounter, "to buy.")
-            displayCounter += 1
+            print("Name:",i.name,"|","Press", counter, "to buy.")
+            counter += 1
+        counter -= 1
         self.lines()
         while True:
-            toBuy = int(input("What share would you like to buy?\n"))
-            if toBuy < 1 or toBuy >= displayCounter:
-                print("Please enter a valid number.")
-                
-            else:
-                break
-
+            toBuy = input("What share would you like to buy?\n")
+            try:
+                toBuy = int(toBuy)
+                if toBuy < counter or toBuy < 1:
+                    break
+                else:
+                    print("Please enter a valid number within 1 and " + str(counter) + ".")
+            except:
+                print("Please enter a number.")
+            
+        toBuy = int(toBuy)
         toBuy -= 1
         print(self.shareList[toBuy].name)
+        system("clear")
 
     def lines(self):print("----------------------------------")
         

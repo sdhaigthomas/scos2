@@ -4,6 +4,7 @@ game = GamePlay()
 game.HUD()
 game.buy()
 while True:
+    game.HUD()
     if game.options() == "":
         for i in range(10):
             sleep(0.5)
