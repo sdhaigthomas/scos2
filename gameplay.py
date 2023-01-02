@@ -43,27 +43,18 @@ class GamePlay:
                 if choice == 3: pass #Stats 
                 else:pass
         else: print("Please enter a valid option.")
-
+###################################################################################################################################
     def buy(self):
-        counter = 1
+        counter = 0
         toBuy = None
         self.lines()
-        print("                  BUY")
-        for i in self.shareList:
-            print("Name:",i.name,"|","Press", counter, "to buy.")
-            counter += 1
-        counter -= 1
+        print("BUY")
+        for i in range(len(self.shareList)):
+            print("Name:",self.shareList[i].name,"|","Press", i + 1, "to buy.")
         self.lines()
-        num = self.integerValidator(1, counter, "What share would you like to buy?")
-        num -= 1
-        
+        num = self.integerValidator(1, len(self.shareList), "What share would you like to buy?") - 1
         amount = self.integerValidator(1, 214483647, "How many would you like to buy?")
-
-
-
-
-
-
+###################################################################################################################################
     def integerValidator(self, minimum, maximum, message):
         while True:
             num = input(message + "\n")
@@ -74,9 +65,8 @@ class GamePlay:
                 else:
                     print("Please enter a valid number within 1 and " + str(maximum) + ".")
             except:
-                print("Please enter a number.")
-            
-        num = int(num)
+                print("Please enter a number.")          
+###################################################################################################################################
     def lines(self): print("----------------------------------")
     def clear(self): pass#system("clear")
         
