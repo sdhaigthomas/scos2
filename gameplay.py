@@ -26,7 +26,7 @@ class GamePlay:
         print("Welcome,", self.player.getName())
 
     def HUD(self):
-        system('clear')
+        self.clear()
         self.lines()
         for i in self.shareList: print(i.name + ": Bid:", f'${i.bid/100:.2f}',"| Offer:", f'${i.offer/100:.2f}',"| Vol:" , i.vol/100)
         self.lines()
@@ -54,21 +54,29 @@ class GamePlay:
             counter += 1
         counter -= 1
         self.lines()
+        num = self.integerValidator(1, counter, "What share would you like to buy?")
+        num -= 1
+        
+        amount = self.integerValidator(1, 214483647, "How many would you like to buy?")
+
+
+
+
+
+
+    def integerValidator(self, minimum, maximum, message):
         while True:
-            toBuy = input("What share would you like to buy?\n")
+            num = input(message + "\n")
             try:
-                toBuy = int(toBuy)
-                if toBuy < counter or toBuy < 1:
-                    break
+                num = int(num)
+                if num < maximum or num < minimum:
+                    return num
                 else:
-                    print("Please enter a valid number within 1 and " + str(counter) + ".")
+                    print("Please enter a valid number within 1 and " + str(maximum) + ".")
             except:
                 print("Please enter a number.")
             
-        toBuy = int(toBuy)
-        toBuy -= 1
-        print(self.shareList[toBuy].name)
-        system("clear")
-
-    def lines(self):print("----------------------------------")
+        num = int(num)
+    def lines(self): print("----------------------------------")
+    def clear(self): pass#system("clear")
         
