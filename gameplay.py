@@ -3,13 +3,13 @@ from shares import Shares
 from portfolio import Portfolio
 from time import sleep
 from os import system
+###################################################################################################################################
 class GamePlay:
-###################################################################################################################################1
     def __init__(self):
-        self.stilton = Shares("Stilton Plc", 152550, 153070, 2100,"Cheese Manufacturer")
-        self.parmesan = Shares("Parmesan Plc", 52320, 10323, 400,"Cheese Manufacturer")
-        self.cheddar = Shares("Cheddar Plc", 15230, 15350, 100,"Cheese Manufacturer")
-        self.blueCheese = Shares("Blue Cheese(uhgh) Plc", 10, 13, 100,"Cheese Manufacturer")
+        self.stilton = Shares("Stilton Plc", 152550, 153070, 2100, 0,"Cheese Manufacturer")
+        self.parmesan = Shares("Parmesan Plc", 52320, 10323, 400, 0,"Cheese Manufacturer")
+        self.cheddar = Shares("Cheddar Plc", 15230, 15350, 100, 0,"Cheese Manufacturer")
+        self.blueCheese = Shares("doritos Plc", 10, 13, 100, 0,"Cheese Manufacturer")
         self.shareList = [self.stilton, self.parmesan, self.cheddar, self.blueCheese]
         self.greet()
 ###################################################################################################################################
@@ -39,7 +39,7 @@ class GamePlay:
             else:
                 choice = int(choice)
                 if choice == 1: self.buy()
-                if choice == 2: pass #Sell
+                if choice == 2: self.sell()
                 if choice == 3: pass #Stats 
                 else:pass
         else: print("Please enter a valid option.")
@@ -55,9 +55,24 @@ class GamePlay:
         num = self.integerValidator(1, lenShareList, "What share would you like to buy?") - 1
         amount = self.integerValidator(1, 214483647, "How many would you like to buy?")
 ###################################################################################################################################
+    def sell(self):
+        counter = 0
+        toSell = None
+        lenShareList = len(self.shareList)
+        self.lines()
+        print("SELL")
+        for i in range(lenShareList): print("Name:",self.shareList[i].name,"| Owned", self.shareList[i].owned,"Press", i + 1, "to sell.")
+        self.lines()
+        num = self.integerValidator(1, lenShareList, "What share would you like to sell?") - 1
+        amount = self.integerValidator(1, 214483647, "How many would you like to sell?")
+############################################################################################################
     def integerValidator(self, minimum, maximum, message):
         while True:
-            num = input(message + "\n")
+            num = input(message + " | Press Enter to cancel.\n")
+            if num == "": 
+                num = 0
+                return 0
+
             try:
                 num = int(num)
                 if num < maximum or num < minimum:
@@ -68,5 +83,7 @@ class GamePlay:
                 print("Please enter a number.")          
 ###################################################################################################################################
     def lines(self): print("----------------------------------")
+###################################################################################################################################
     def clear(self): pass#system("clear")
+###################################################################################################################################
         

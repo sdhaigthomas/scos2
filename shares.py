@@ -1,10 +1,11 @@
 from random import randint as rnd
 class Shares:
-    def __init__(self, name, bid, offer, vol, sector):
+    def __init__(self, name, bid, offer, vol, owned, sector):
         self.name = name
         self.bid = bid
         self.offer = offer
         self.vol = vol
+        self.owned = owned
         self.sector = sector
     def stockPriceChange(self, vol, price):
         negitiveVol = vol * -1
