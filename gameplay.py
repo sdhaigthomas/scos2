@@ -30,6 +30,8 @@ class GamePlay:
         self.lines()
         for i in self.shareList: print(i.name + ": Bid:", f'${i.bid/100:.2f}',"| Offer:", f'${i.offer/100:.2f}',"| Vol:" , i.vol/100)
         self.lines()
+    def sharesOwned(self):
+        pass
 ###################################################################################################################################
     def options(self):
         choice = input("Would you like to, Buy[1], Sell[2], Wait Until Tomorrow[Enter] or Statistics[3]\n")
@@ -45,34 +47,30 @@ class GamePlay:
         else: print("Please enter a valid option.")
 ###################################################################################################################################
     def buy(self):
-        counter = 0
-        toBuy = None
-        lenShareList = len(self.shareList)
-        self.lines()
-        print("BUY")
-        for i in range(lenShareList): print("Name:",self.shareList[i].name,"|","Press", i + 1, "to buy.")
-        self.lines()
-        num = self.integerValidator(1, lenShareList, "What share would you like to buy?") - 1
-        amount = self.integerValidator(1, 214483647, "How many would you like to buy?")
+        transactions = self.transactions("Buy", "buy")
+        return transactions[0], transactions[1], transactions[2]
 ###################################################################################################################################
     def sell(self):
+        transactions = self.transactions("Sell", "sell")
+        return transactions[0], transactions[1], transactions[2]
+############################################################################################################
+    def transactions(self, transTypeCaps, transType):
         counter = 0
         toSell = None
         lenShareList = len(self.shareList)
         self.lines()
-        print("SELL")
-        for i in range(lenShareList): print("Name:",self.shareList[i].name,"| Owned", self.shareList[i].owned,"Press", i + 1, "to sell.")
+        print(transType)
+        for i in range(lenShareList): print("Name:",self.shareList[i].name,"| Owned", self.shareList[i].owned,"Press", i + 1, "to " + transType + ".")
         self.lines()
-        num = self.integerValidator(1, lenShareList, "What share would you like to sell?") - 1
-        amount = self.integerValidator(1, 214483647, "How many would you like to sell?")
+        num = self.integerValidator(1, lenShareList, "What share would you like to " + transType + "?") - 1
+        amount = self.integerValidator(1, 214483647, "How many would you like to " + transType + "?")
+        return num, amount, transType
 ############################################################################################################
     def integerValidator(self, minimum, maximum, message):
         while True:
             num = input(message + " | Press Enter to cancel.\n")
             if num == "": 
-                num = 0
                 return 0
-
             try:
                 num = int(num)
                 if num < maximum or num < minimum:
@@ -80,7 +78,8 @@ class GamePlay:
                 else:
                     print("Please enter a valid number within 1 and " + str(maximum) + ".")
             except:
-                print("Please enter a number.")          
+                print("Please enter a number.") 
+        
 ###################################################################################################################################
     def lines(self): print("----------------------------------")
 ###################################################################################################################################

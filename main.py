@@ -1,8 +1,7 @@
 from gameplay import GamePlay
 from time import sleep
 game = GamePlay()
-game.HUD()
-game.buy()
+
 while True:
     game.HUD()
     if game.options() == "":
