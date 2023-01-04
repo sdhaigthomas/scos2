@@ -15,9 +15,11 @@ class GamePlay:
         self.blueCheese = Shares("doritos Plc", 10, 13, 100, 0,"Cheese Manufacturer")
         self.shareList = [self.stilton, self.parmesan, self.cheddar, self.blueCheese]
         self.log = []
+        self.days = 0
         self.greet()
 ###################################################################################################################################
     def fullPriceChanges(self):
+        self.days += 1
         for i in self.shareList:
             i.bid = i.stockPriceChange(i.vol, i.bid)
             i.offer = i.bid
@@ -36,7 +38,6 @@ class GamePlay:
         self.lines()
     def sharesOwned(self):
         pass
-    
 ###################################################################################################################################
     def options(self):
         portfolioProp = ["date", "name","sharePrice", "noShares", "transType"]
@@ -48,25 +49,23 @@ class GamePlay:
                 choice = int(choice)
                 if choice == 1: self.log.append(self.portfolioGen(self.buy()))
                 if choice == 2: self.log.append(self.portfolioGen(self.sell()))
-                if choice == 3: pass
-                else:pass
+                if choice == 3: 
+                    for i in self.log:
+                        print("Date of transaction:" , i.portfolio["date"], "| Name of share:",i.portfolio["name"], "| Transaction type:", i.portfolio["transType"], "| Shares involved in transaction:", i.portfolio["noShares"], "| Share price of share at time of purchase:", f'${i.portfolio["sharePrice"]/100:.2f}')
+                    input("Press enter to continue.")
+                else: pass
         else: print("Please enter a valid option.")
 ###################################################################################################################################
     def buy(self):
         self.clear()
-        transactions = self.transactions("Buy", "buy")
-        return transactions
+        return self.transactions("Buy", "buy")
 ###################################################################################################################################
     def sell(self):
         self.clear()
-        transactions = self.transactions("Sell", "sell")
-        return transactions
+        return self.transactions("Sell", "sell")
 ###################################################################################################################################
     def portfolioGen(self, transactions):
-        share = transactions[0]
-        amount = transactions[1]
-        transType = transactions[2]
-        return Portfolio(datetime.now(), self.shareList[share].name,self.shareList[share].offer, amount, transType)
+        return Portfolio(self.days, self.shareList[transactions[0]].name, transactions[2], transactions[1], self.shareList[transactions[0]].offer)
 ###################################################################################################################################
     def transactions(self, transTypeCaps, transType):
         counter = 0
