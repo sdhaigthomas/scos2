@@ -59,7 +59,7 @@ class GamePlay:
         toSell = None
         lenShareList = len(self.shareList)
         self.lines()
-        print(transType)
+        print(transTypeCaps)
         for i in range(lenShareList): print("Name:",self.shareList[i].name,"| Owned", self.shareList[i].owned,"Press", i + 1, "to " + transType + ".")
         self.lines()
         num = self.integerValidator(1, lenShareList, "What share would you like to " + transType + "?") - 1
@@ -79,7 +79,6 @@ class GamePlay:
                     print("Please enter a valid number within 1 and " + str(maximum) + ".")
             except:
                 print("Please enter a number.") 
-        
 ###################################################################################################################################
     def lines(self): print("----------------------------------")
 ###################################################################################################################################
