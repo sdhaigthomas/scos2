@@ -31,7 +31,6 @@ class GamePlay:
 ###################################################################################################################################
     def HUD(self):
         self.clear()
-        self.sharesOwned("doritos Plc")
         self.lines()
         for i in self.shareList: print(i.name + ": Bid:", f'${i.bid/100:.2f}',"| Offer:", f'${i.offer/100:.2f}',"| Vol:" , i.vol/100)
         self.lines()
