@@ -49,7 +49,6 @@ class GamePlay:
         self.lines()
 ###################################################################################################################################
     def options(self):
-        portfolioProp = ["date", "name","sharePrice", "noShares", "transType"]
         msg = "You have " + f'${self.player.balance/100:,.2f}' + "| Would you like to, Buy[1], Sell[2], Wait Until Tomorrow[Enter] or Statistics[3]\n"
         choice = input(msg)
         if choice == "1" or choice == "2" or choice == "3" or choice == "":
@@ -58,14 +57,16 @@ class GamePlay:
             else:
                 choice = int(choice)
                 if choice == 1:
-                    self.log.append(self.portfolioGen(self.buy()))
-                    if self.player.balance - self.log[-1].portfolio["noShares"] * self.log[-1].portfolio["sharePrice"] < 0: 
+                    portpofioPreview = self.portfolioGen(self.buy())
+                    if self.player.balance - portpofioPreview.portfolio["noShares"] * portpofioPreview.portfolio["sharePrice"] < 0: 
                         print("You cant afford that!")
                         sleep(2)
-                    else: self.player.balance -= self.log[-1].portfolio["noShares"] * self.log[-1].portfolio["sharePrice"]
+                    else: 
+                        self.log.append(self.portfolioGen(self.buy()))
+                        self.player.balance -= portpofioPreview.portfolio["noShares"] * portpofioPreview.portfolio["sharePrice"]
                 if choice == 2: 
                     self.log.append(self.portfolioGen(self.sell()))
-                    self.player.balance += self.log[-1].portfolio["noShares"] * self.log[-1].portfolio["sharePrice"]
+                    self.player.balance += portpofioPreview.portfolio["noShares"] * portpofioPreview.portfolio["sharePrice"]
                 if choice == 3: 
                     for i in self.log:
                         print("Date of transaction:" , i.portfolio["date"], "| Name of share:",i.portfolio["name"], "| Transaction type:", i.portfolio["transType"], "| Shares involved in transaction:", i.portfolio["noShares"], "| Share price of share at time of purchase:", f'${i.portfolio["sharePrice"]/100:.2f}')
