@@ -19,14 +19,11 @@ class GamePlay:
         self.greet()
 ###################################################################################################################################
     def fullPriceChanges(self):
-        oldOffers = []
-        for i in self.shareList:
-            oldOffers.append(int(i.offer))
+        self.days += 1
         for i in self.shareList:
             i.bid = i.stockPriceChange(i.vol, i.bid)
             i.offer = i.bid
             i.offer += i.offerGenerator(i.vol)
-        return oldOffers
 ###################################################################################################################################
     def greet(self):
         print("Welcome to stocks!")
@@ -34,16 +31,10 @@ class GamePlay:
         self.player = Player(name, 1000000)
         print("Welcome,", self.player.getName())
 ###################################################################################################################################
-    def HUD(self, old):
+    def HUD(self):
         self.clear()
         self.lines()
-        diffCounter = 0
-        for i in self.shareList:
-            difference = abs(old[diffCounter] - i.offer)
-            if i.offer < old[diffCounter]: plusMinus = "-"
-            else: plusMinus = "+"
-            print(i.name + ": Bid:", f'${i.bid/100:,.2f}',"| Offer:", f'${i.offer/100:,.2f}',"(" + plusMinus + str(round(difference, 2) / 100) + ") | Vol:" , i.vol/100, "| Amount Owned", self.aggregator(i.name))
-            diffCounter += 1
+        for i in self.shareList: print(i.name + ": Bid:", f'${i.bid/100:,.2f}',"| Offer:", f'${i.offer/100:,.2f}',"| Vol:" , i.vol/100, "| Amount Owned", self.aggregator(i.name))
         self.lines()
 ###################################################################################################################################
     def options(self):
@@ -91,7 +82,7 @@ class GamePlay:
         which = self.integerValidator(1, lenShareList, "What share would you like to " + transType + "?") - 1
         amount = self.integerValidator(1, 214483647, "How many would you like to " + transType + "?")
         return which, amount, transType
-###################################################################################################################################
+############################################################################################################      aggregator
     def integerValidator(self, minimum, maximum, message):
         while True:
             num = input(message + " | Press Enter to cancel.\n")
@@ -118,5 +109,5 @@ class GamePlay:
 ###################################################################################################################################
     def lines(self): print("----------------------------------")
 ###################################################################################################################################
-    def clear(self): system("clear")
+    def clear(self): pass #system("clear")
 ###################################################################################################################################     
