@@ -62,7 +62,7 @@ class GamePlay:
                         print("You cant afford that!")
                         sleep(2)
                     else: 
-                        self.log.append(self.portfolioGen(self.buy()))
+                        self.log.append(portpofioPreview)
                         self.player.balance -= portpofioPreview.portfolio["noShares"] * portpofioPreview.portfolio["sharePrice"]
                 if choice == 2: 
                     self.log.append(self.portfolioGen(self.sell()))
