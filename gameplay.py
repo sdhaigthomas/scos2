@@ -28,26 +28,33 @@ class GamePlay:
     def greet(self):
         print("Welcome to stocks!")
         name = input("Please Enter a Name:\n")
-        self.player = Player(name, 10000)
+        self.player = Player(name, 1000000)
         print("Welcome,", self.player.getName())
 ###################################################################################################################################
     def HUD(self):
         self.clear()
-        self.aggregator("doritos Plc")
         self.lines()
-        for i in self.shareList: print(i.name + ": Bid:", f'${i.bid/100:.2f}',"| Offer:", f'${i.offer/100:.2f}',"| Vol:" , i.vol/100, "| Amount Owned", self.aggregator(i.name))
+        for i in self.shareList: print(i.name + ": Bid:", f'${i.bid/100:,.2f}',"| Offer:", f'${i.offer/100:,.2f}',"| Vol:" , i.vol/100, "| Amount Owned", self.aggregator(i.name))
         self.lines()
 ###################################################################################################################################
     def options(self):
         portfolioProp = ["date", "name","sharePrice", "noShares", "transType"]
-        choice = input("Would you like to, Buy[1], Sell[2], Wait Until Tomorrow[Enter] or Statistics[3]\n")
+        msg = "You have " + f'${self.player.balance/100:,.2f}' + "| Would you like to, Buy[1], Sell[2], Wait Until Tomorrow[Enter] or Statistics[3]\n"
+        choice = input(msg)
         if choice == "1" or choice == "2" or choice == "3" or choice == "":
             if choice == "":
                 return choice
             else:
                 choice = int(choice)
-                if choice == 1: self.log.append(self.portfolioGen(self.buy()))
-                if choice == 2: self.log.append(self.portfolioGen(self.sell()))
+                if choice == 1:
+                    self.log.append(self.portfolioGen(self.buy()))
+                    if self.player.balance - self.log[len(self.log) - 1].portfolio["noShares"] * self.log[len(self.log) - 1].portfolio["sharePrice"] < 0: 
+                        print("You cant afford that!")
+                        sleep(2)
+                    else: self.player.balance -= self.log[len(self.log) - 1].portfolio["noShares"] * self.log[len(self.log) - 1].portfolio["sharePrice"]
+                if choice == 2: 
+                    self.log.append(self.portfolioGen(self.sell()))
+                    self.player.balance += self.log[len(self.log) - 1].portfolio["noShares"] * self.log[len(self.log) - 1].portfolio["sharePrice"]
                 if choice == 3: 
                     for i in self.log:
                         print("Date of transaction:" , i.portfolio["date"], "| Name of share:",i.portfolio["name"], "| Transaction type:", i.portfolio["transType"], "| Shares involved in transaction:", i.portfolio["noShares"], "| Share price of share at time of purchase:", f'${i.portfolio["sharePrice"]/100:.2f}')
@@ -67,8 +74,6 @@ class GamePlay:
         return Portfolio(self.days, self.shareList[transactions[0]].name, transactions[2], transactions[1], self.shareList[transactions[0]].offer)
 ###################################################################################################################################
     def transactions(self, transTypeCaps, transType):
-        counter = 0
-        toSell = None
         lenShareList = len(self.shareList)
         self.lines()
         print(transTypeCaps)
@@ -104,5 +109,5 @@ class GamePlay:
 ###################################################################################################################################
     def lines(self): print("----------------------------------")
 ###################################################################################################################################
-    def clear(self): pass#system("clear")
+    def clear(self): pass #system("clear")
 ###################################################################################################################################     
