@@ -33,11 +33,10 @@ class GamePlay:
 ###################################################################################################################################
     def HUD(self):
         self.clear()
+        self.aggregator("doritos Plc")
         self.lines()
-        for i in self.shareList: print(i.name + ": Bid:", f'${i.bid/100:.2f}',"| Offer:", f'${i.offer/100:.2f}',"| Vol:" , i.vol/100)
+        for i in self.shareList: print(i.name + ": Bid:", f'${i.bid/100:.2f}',"| Offer:", f'${i.offer/100:.2f}',"| Vol:" , i.vol/100, "| Amount Owned", self.aggregator(i.name))
         self.lines()
-    def sharesOwned(self):
-        pass
 ###################################################################################################################################
     def options(self):
         portfolioProp = ["date", "name","sharePrice", "noShares", "transType"]
@@ -73,7 +72,7 @@ class GamePlay:
         lenShareList = len(self.shareList)
         self.lines()
         print(transTypeCaps)
-        for i in range(lenShareList): print("Name:",self.shareList[i].name,"| Owned", self.shareList[i].owned,"Press", i + 1, "to " + transType + ".")
+        for i in range(lenShareList): print("Name:",self.shareList[i].name,"| Owned", self.aggregator(self.shareList[i].name),"Press", i + 1, "to " + transType + ".")
         self.lines()
         which = self.integerValidator(1, lenShareList, "What share would you like to " + transType + "?") - 1
         amount = self.integerValidator(1, 214483647, "How many would you like to " + transType + "?")
@@ -93,7 +92,17 @@ class GamePlay:
             except:
                 print("Please enter a number.") 
 ###################################################################################################################################
+    def aggregator(self, shareName):
+        owned = 0
+        for i in self.log:
+            if i.portfolio["name"] == shareName:
+                if i.portfolio["transType"] == "buy":
+                    owned += i.portfolio["noShares"]
+                else:
+                    owned -= i.portfolio["noShares"]
+        return owned
+###################################################################################################################################
     def lines(self): print("----------------------------------")
 ###################################################################################################################################
-    def clear(self): system("clear")
+    def clear(self): pass#system("clear")
 ###################################################################################################################################     
