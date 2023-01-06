@@ -53,17 +53,18 @@ class GamePlay:
             if choice == "": return choice
             else:
                 choice = int(choice)
-                portpofioPreview = self.portfolioGen(self.buy())
                 if choice == 1:
-                    if self.player.balance - portpofioPreview.portfolio["noShares"] * portpofioPreview.portfolio["sharePrice"] < 0: 
+                    portpofioPreviewBuy = self.portfolioGen(self.buy())
+                    if self.player.balance - portpofioPreviewBuy.portfolio["noShares"] * portpofioPreviewBuy.portfolio["sharePrice"] < 0: 
                         print("You cant afford that!")
                         sleep(2)
                     else: 
-                        self.log.append(portpofioPreview)
-                        self.player.balance -= portpofioPreview.portfolio["noShares"] * portpofioPreview.portfolio["sharePrice"]
-                if choice == 2: 
-                    self.log.append(portpofioPreview)
-                    self.player.balance += portpofioPreview.portfolio["noShares"] * portpofioPreview.portfolio["sharePrice"]
+                        self.log.append(portpofioPreviewBuy)
+                        self.player.balance -= portpofioPreviewBuy.portfolio["noShares"] * portpofioPreviewBuy.portfolio["sharePrice"]
+                if choice == 2:
+                    portpofioPreviewSell = self.portfolioGen(self.sell())
+                    self.log.append(portpofioPreviewSell)
+                    self.player.balance += portpofioPreviewSell.portfolio["noShares"] * portpofioPreviewSell.portfolio["sharePrice"]
                 if choice == 3: 
                     for i in self.log:
                         print("Date of transaction:" , i.portfolio["date"], "| Name of share:",i.portfolio["name"], "| Transaction type:", i.portfolio["transType"], "| Shares involved in transaction:", i.portfolio["noShares"], "| Share price of share at time of purchase:", f'${i.portfolio["sharePrice"]/100:.2f}')
