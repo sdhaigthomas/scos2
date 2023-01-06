@@ -12,7 +12,7 @@ class Shares:
         price += rnd(negitiveVol, vol)
         if price <= 1:
             price = 1
-        return price
+        return round(price, 2)
     def offerGenerator(self, price):
         price = price * 1.10
         return price
