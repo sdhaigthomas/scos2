@@ -4,18 +4,21 @@ from portfolio import Portfolio
 from time import sleep
 from os import system
 from math import floor
+import platform
 ###################################################################################################################################
 class GamePlay:
     def __init__(self):
-        self.clear()
-        self.stilton = Shares("Stilton Plc", 152550, 153070, 12100, 0,"Cheese Manufacturer")
-        self.parmesan = Shares("Parmesan Plc", 52320, 10323, 400, 0,"Cheese Manufacturer")
-        self.cheddar = Shares("Cheddar Plc", 15230, 15350, 100, 0,"Cheese Manufacturer")
-        self.doritos = Shares("doritos Plc", 10, 13, 100, 0,"Cheese Manufacturer")
-        self.shareList = [self.stilton, self.parmesan, self.cheddar, self.doritos]
         self.log = []
+        self.os = 0
         self.oldOffers = []
         self.days = 0
+        self.thomasIndustrial = Shares("Thomas Industrial", 152550, 153070, 12100, 0,"manufacturere")
+        self.alexAndSons = Shares("Alex & Sons      ", 52320, 10323, 400, 0,"legal")
+        self.Edht2 = Shares("Edht2 Websevices ", 15230, 15350, 100, 0,"digtal")
+        self.sdhtMedia = Shares("Sdht Media       ", 10, 13, 100, 0,"digital")
+        self.diamondBank = Shares("Diamond Bank      ", 2500023, 2523212, 100000, 0, "bank")
+        #INSERT CUSTOM COMPANYS HERE
+        self.shareList = [self.diamondBank, self.thomasIndustrial,self.alexAndSons, self.Edht2, self.sdhtMedia]
         self.greet()
         self.fullPriceChanges(True)
 ###################################################################################################################################
@@ -35,6 +38,7 @@ class GamePlay:
         name = input("Please Enter a Name:\n")
         self.player = Player(name, 1000000)
         print("Welcome,", self.player.getName())
+        self.os = platform.system()
 ###################################################################################################################################
     def HUD(self):
         self.clear()
@@ -96,12 +100,13 @@ class GamePlay:
             if transType == "buy": msg = str("| You can afford " + str(floor(self.player.balance / self.shareList[i].offer)))
             print("Name:",self.shareList[i].name,"| Owned", self.aggregator(self.shareList[i].name),"| Offer:",self.formatNum(self.shareList[i].offer), msg,"| Press", i + 1, "to " + transType + ".")
         self.lines()
-        which = self.integerValidator(1, lenShareList, "What share would you like to " + transType + "?") - 1
-        amount = self.integerValidator(1, 214483647, "How many would you like to " + transType + "?")
+        which = self.integerValidator(1, lenShareList, "What share would you like to " + transType + "?", True) - 1
+        amount = self.integerValidator(1, 214483647, "How many would you like to " + transType + "?", True)
         return which, amount, transType
 ###################################################################################################################################
-    def integerValidator(self, minimum, maximum, message):
-        msg = "You have: " + str(self.formatNum(self.player.balance)) + " | " + message + " | Press Enter to cancel.\n"
+    def integerValidator(self, minimum, maximum, message, forBuySell):
+        if forBuySell == True: msg = "You have: " + str(self.formatNum(self.player.balance)) + " | " + message + " | Press Enter to cancel.\n"
+        else: msg = message + " | Press Enter to cancel.\n"
         while True:
             num = input(msg)
             if num == "": return False
@@ -138,5 +143,9 @@ class GamePlay:
 ###################################################################################################################################
     def lines(self): print("----------------------------------")
 ###################################################################################################################################
-    def clear(self): system("clear")
+    def clear(self): 
+        if self.os == "Windows":
+            system("cls")
+        else:
+            system("clear")
 ###################################################################################################################################     
