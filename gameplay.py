@@ -44,12 +44,12 @@ class GamePlay:
             difference = abs(self.oldOffers[diffCounter] - i.offer)
             if i.offer < self.oldOffers[diffCounter]: plusMinus = "-"
             else: plusMinus = "+"
-            print(i.name + ": Bid:", f'${i.bid/100:,.2f}',"| Offer:", f'${i.offer/100:,.2f}',"(" + plusMinus + str(round(difference, 2) / 100) + ") | Vol:" , i.vol/100, "| Amount Owned", self.aggregator(i.name))
+            print(i.name + ": Bid:", f'${i.bid/100:,.2f}'," | Offer:", f'${i.offer/100:,.2f}',"(" + plusMinus + str(round(difference, 2) / 100) + ") | Vol:" , i.vol/100, "| Amount Owned", self.aggregator(i.name))
             diffCounter += 1
         self.lines()
 ###################################################################################################################################
     def options(self):
-        msg = "You have " + f'${self.player.balance/100:,.2f}' + "| Would you like to, Buy[1], Sell[2], Wait Until Tomorrow[Enter] or Statistics[3]\n"
+        msg = "You have " + f'${self.player.balance/100:,.2f}' + " | Would you like to, Buy[1], Sell[2], Wait Until Tomorrow[Enter] or Statistics[3]\n"
         choice = input(msg)
         if choice == "1" or choice == "2" or choice == "3" or choice == "":
             if choice == "": return choice
@@ -99,8 +99,9 @@ class GamePlay:
         return which, amount, transType
 ###################################################################################################################################
     def integerValidator(self, minimum, maximum, message):
+        msg = "You have: " + str(f'${self.player.balance/100:,.2f}') + " | " + message + " | Press Enter to cancel.\n"
         while True:
-            num = input(message + " | Press Enter to cancel.\n")
+            num = input(msg)
             if num == "": return False
             try:
                 num = int(num)
@@ -124,12 +125,11 @@ class GamePlay:
             if share.name == i.portfolio["name"]:
                 if i.portfolio["transType"] == "buy": counter += i.portfolio["noShares"]
                 else: counter -= i.portfolio["noShares"]    
-                if counter > 0:
-                    holderList = []
-                    toSave = ["noShares", "transType", "sharePrice"]
-                    for j in range(len(toSave)): holderList.append(i.portfolio[toSave[j]])
-                    sharesLog.append(holderList)
-                elif counter <= 0:
+                holderList = []
+                toSave = ["noShares", "transType", "sharePrice"]
+                for j in range(len(toSave)): holderList.append(i.portfolio[toSave[j]])
+                sharesLog.append(holderList)
+                if counter == 0:
                     sharesLog = []
         print(sharesLog)
         print(counter)
