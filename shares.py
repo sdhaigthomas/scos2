@@ -1,5 +1,4 @@
 from random import randint as rnd
-print("test")# REMOVE THIS
 ###################################################################################################################################
 class Shares:
     def __init__(self, name, bid, offer, vol, owned, sector):
