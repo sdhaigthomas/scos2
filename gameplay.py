@@ -44,12 +44,14 @@ class GamePlay:
             difference = abs(self.oldOffers[diffCounter] - i.offer)
             if i.offer < self.oldOffers[diffCounter]: plusMinus = "-"
             else: plusMinus = "+"
-            print(i.name + ": Bid:", f'${i.bid/100:,.2f}'," | Offer:", f'${i.offer/100:,.2f}',"(" + plusMinus + str(round(difference, 2) / 100) + ") | Vol:" , i.vol/100, "| Amount Owned", self.aggregator(i.name))
+            print(i.name + ": Bid:", self.formatNum(i.bid)," | Offer:", self.formatNum(i.offer),"(" + plusMinus + str(round(difference, 2) / 100) + ") | Vol:" , i.vol/100, "| Amount Owned", self.aggregator(i.name))
             diffCounter += 1
         self.lines()
 ###################################################################################################################################
+    def formatNum(self, num): return f'${num/100:,.2f}'   
+###################################################################################################################################
     def options(self):
-        msg = "You have " + f'${self.player.balance/100:,.2f}' + " | Would you like to, Buy[1], Sell[2], Wait Until Tomorrow[Enter] or Statistics[3]\n"
+        msg = "You have " + self.formatNum(self.player.balance) + " | Would you like to, Buy[1], Sell[2], Wait Until Tomorrow[Enter] or Statistics[3]\n"
         choice = input(msg)
         if choice == "1" or choice == "2" or choice == "3" or choice == "":
             if choice == "": return choice
@@ -69,7 +71,7 @@ class GamePlay:
                     self.player.balance += portpofioPreviewSell.portfolio["noShares"] * portpofioPreviewSell.portfolio["sharePrice"]
                 if choice == 3: 
                     for i in self.log:
-                        print("Date of transaction:" , i.portfolio["date"], "| Name of share:",i.portfolio["name"], "| Transaction type:", i.portfolio["transType"], "| Shares involved in transaction:", i.portfolio["noShares"], "| Share price of share at time of purchase:", f'${i.portfolio["sharePrice"]/100:.2f}')
+                        print("Date of transaction:" , i.portfolio["date"], "| Name of share:",i.portfolio["name"], "| Transaction type:", i.portfolio["transType"], "| Shares involved in transaction:", i.portfolio["noShares"], "| Share price of share at time of purchase:", self.formatNum(i.portfolio["sharePrice"]))
                     input("Press enter to continue.")
                 else: pass
         else: input("Please enter a valid option | Press enter to continue")
@@ -92,14 +94,14 @@ class GamePlay:
         msg = ""
         for i in range(lenShareList): 
             if transType == "buy": msg = str("| You can afford " + str(floor(self.player.balance / self.shareList[i].offer)))
-            print("Name:",self.shareList[i].name,"| Owned", self.aggregator(self.shareList[i].name),"| Offer:",f'${self.shareList[i].offer/100:,.2f}', msg,"| Press", i + 1, "to " + transType + ".")
+            print("Name:",self.shareList[i].name,"| Owned", self.aggregator(self.shareList[i].name),"| Offer:",self.formatNum(self.shareList[i].offer), msg,"| Press", i + 1, "to " + transType + ".")
         self.lines()
         which = self.integerValidator(1, lenShareList, "What share would you like to " + transType + "?") - 1
         amount = self.integerValidator(1, 214483647, "How many would you like to " + transType + "?")
         return which, amount, transType
 ###################################################################################################################################
     def integerValidator(self, minimum, maximum, message):
-        msg = "You have: " + str(f'${self.player.balance/100:,.2f}') + " | " + message + " | Press Enter to cancel.\n"
+        msg = "You have: " + str(self.formatNum(self.player.balance)) + " | " + message + " | Press Enter to cancel.\n"
         while True:
             num = input(msg)
             if num == "": return False
