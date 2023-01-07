@@ -16,7 +16,7 @@ class GamePlay:
         self.alexAndSons = Shares("Alex & Sons      ", 52320, 10323, 400, 0,"legal")
         self.Edht2 = Shares("Edht2 Websevices ", 15230, 15350, 100, 0,"digtal")
         self.sdhtMedia = Shares("Sdht Media       ", 10, 13, 100, 0,"digital")
-        self.diamondBank = Shares("Diamond Bank      ", 2500023, 2523212, 100000, 0, "bank")
+        self.diamondBank = Shares("Diamond Bank     ", 2500023, 2523212, 100000, 0, "bank")
         #INSERT CUSTOM COMPANYS HERE
         self.shareList = [self.diamondBank, self.thomasIndustrial,self.alexAndSons, self.Edht2, self.sdhtMedia]
         self.greet()
@@ -144,8 +144,6 @@ class GamePlay:
     def lines(self): print("----------------------------------")
 ###################################################################################################################################
     def clear(self): 
-        if self.os == "Windows":
-            system("cls")
-        else:
-            system("clear")
+        if self.os == "Windows": system("cls")
+        else: system("clear")
 ###################################################################################################################################     
