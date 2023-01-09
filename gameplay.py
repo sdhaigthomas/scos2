@@ -8,7 +8,7 @@ import platform
 ###################################################################################################################################
 class GamePlay:
     def __init__(self):
-        self.log = []
+        self.portfolio = Portfolio("Startup", "Startup","Startup","Startup","Startup")
         self.os = 0
         self.oldOffers = []
         self.days = 0
@@ -42,6 +42,7 @@ class GamePlay:
 ###################################################################################################################################
     def HUD(self):
         self.clear()
+        print(self.portfolio.averagePriceCalc(self.shareList, self.portfolio.log))
         self.lines()
         diffCounter = 0
         for i in self.shareList:
@@ -63,21 +64,21 @@ class GamePlay:
                 choice = int(choice)
 ###################################################################################################################################                
                 if choice == 1:
-                    portpofioPreviewBuy = self.portfolioGen(self.buy())
-                    if self.player.balance - portpofioPreviewBuy.portfolio["noShares"] * portpofioPreviewBuy.portfolio["sharePrice"] < 0: 
+                    portfolioPreviewBuy = self.portfolioGen(self.buy())
+                    if self.player.balance - portfolioPreviewBuy.portfolio["noShares"] * portfolioPreviewBuy.portfolio["sharePrice"] < 0: 
                         print("You cant afford that!")
                         sleep(2)
                     else: 
-                        self.log.append(portpofioPreviewBuy)
-                        self.player.balance -= portpofioPreviewBuy.portfolio["noShares"] * portpofioPreviewBuy.portfolio["sharePrice"]
+                        self.portfolio.log.append(portfolioPreviewBuy)
+                        self.player.balance -= portfolioPreviewBuy.portfolio["noShares"] * portfolioPreviewBuy.portfolio["sharePrice"]
 ###################################################################################################################################
                 elif choice == 2:
-                    portpofioPreviewSell = self.portfolioGen(self.sell())
-                    self.log.append(portpofioPreviewSell)
-                    self.player.balance += portpofioPreviewSell.portfolio["noShares"] * portpofioPreviewSell.portfolio["sharePrice"]
+                    portfolioPreviewSell = self.portfolioGen(self.sell())
+                    self.portfolio.log.append(portfolioPreviewSell)
+                    self.player.balance += portfolioPreviewSell.portfolio["noShares"] * portfolioPreviewSell.portfolio["sharePrice"]
 ###################################################################################################################################
                 elif choice == 3: 
-                    for i in self.log:
+                    for i in self.portfolio.log:
                         print("Date of transaction:" , i.portfolio["date"], "| Name of share:",i.portfolio["name"], "| Transaction type:", i.portfolio["transType"], "| Shares involved in transaction:", i.portfolio["noShares"], "| Share price of share at time of purchase:", self.formatNum(i.portfolio["sharePrice"]))
                     input("Press enter to continue.")
                 else: pass
@@ -121,7 +122,7 @@ class GamePlay:
 ###################################################################################################################################
     def aggregator(self, shareName):
         owned = 0
-        for i in self.log:
+        for i in self.portfolio.log:
             if i.portfolio["name"] == shareName:
                 if i.portfolio["transType"] == "buy": owned += i.portfolio["noShares"]
                 else: owned -= i.portfolio["noShares"]
@@ -131,7 +132,7 @@ class GamePlay:
         sharesLog = []
         holderList = []
         counter = 0
-        for i in self.log:
+        for i in self.portfolio.log:
             if share.name == i.portfolio["name"]:
                 if i.portfolio["transType"] == "buy": counter += i.portfolio["noShares"]
                 else: counter -= i.portfolio["noShares"]    
