@@ -61,6 +61,7 @@ class GamePlay:
             if choice == "": return choice
             else:
                 choice = int(choice)
+###################################################################################################################################                
                 if choice == 1:
                     portpofioPreviewBuy = self.portfolioGen(self.buy())
                     if self.player.balance - portpofioPreviewBuy.portfolio["noShares"] * portpofioPreviewBuy.portfolio["sharePrice"] < 0: 
@@ -69,11 +70,13 @@ class GamePlay:
                     else: 
                         self.log.append(portpofioPreviewBuy)
                         self.player.balance -= portpofioPreviewBuy.portfolio["noShares"] * portpofioPreviewBuy.portfolio["sharePrice"]
-                if choice == 2:
+###################################################################################################################################
+                elif choice == 2:
                     portpofioPreviewSell = self.portfolioGen(self.sell())
                     self.log.append(portpofioPreviewSell)
                     self.player.balance += portpofioPreviewSell.portfolio["noShares"] * portpofioPreviewSell.portfolio["sharePrice"]
-                if choice == 3: 
+###################################################################################################################################
+                elif choice == 3: 
                     for i in self.log:
                         print("Date of transaction:" , i.portfolio["date"], "| Name of share:",i.portfolio["name"], "| Transaction type:", i.portfolio["transType"], "| Shares involved in transaction:", i.portfolio["noShares"], "| Share price of share at time of purchase:", self.formatNum(i.portfolio["sharePrice"]))
                     input("Press enter to continue.")

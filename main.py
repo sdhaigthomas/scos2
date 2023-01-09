@@ -16,8 +16,8 @@ while True:
             game.HUD()
             game.fullPriceChanges(False)
 ###################################################################################################################################
-    charge = 40000 + rnd(-1000, 1000)
-    game.player.balance -= charge
+        charge = 40000 + rnd(-1000, 1000)
+        game.player.balance -= charge
 ###################################################################################################################################
     if game.player.balance < 0:
         for i in game.log: print("Date of transaction:" , i.portfolio["date"], "| Name of share:",i.portfolio["name"], "| Transaction type:", i.portfolio["transType"], "| Shares involved in transaction:", i.portfolio["noShares"], "| Share price of share at time of purchase:", game.formatNum(i.portfolio["sharePrice"]))
