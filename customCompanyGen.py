@@ -32,9 +32,9 @@ class Main:
         elif sectorChoice == 3: sector = "banking"
         elif sectorChoice == 4: sector = "retail"
         spaceName = name
-        if len(name) < 10:
-            for i in range(17 - len(name)):
-                spaceName += " "
+        if len(name) < 17:
+            for i in range(17 - len(name)): spaceName += " "
+                
         return varName, bid, offer, vol, owned, sector, spaceName
 ###################################################################################################################################
     def instructions(self, varName, bid, offer, vol, owned, sector, spaceName):

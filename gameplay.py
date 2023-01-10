@@ -1,4 +1,5 @@
 from player import Player
+from random import randint as rnd
 from shares import Shares
 from portfolio import Portfolio
 from time import sleep
@@ -8,10 +9,11 @@ import platform
 ###################################################################################################################################
 class GamePlay:
     def __init__(self):
-        self.portfolio = Portfolio("Startup", "Startup","Startup","Startup","Startup")
+        self.portfolio = Portfolio()
         self.os = 0
-        self.oldOffers = []
         self.days = 0
+        self.charge = 0
+        self.oldOffers = []
         self.thomasIndustrial = Shares("Thomas Industrial", 152550, 153070, 12100, 0,"manufacturere")
         self.alexAndSons = Shares("Alex & Sons      ", 52320, 10323, 400, 0,"legal")
         self.Edht2 = Shares("Edht2 Websevices ", 15230, 15350, 100, 0,"digtal")
@@ -21,6 +23,15 @@ class GamePlay:
         self.shareList = [self.diamondBank, self.thomasIndustrial,self.alexAndSons, self.Edht2, self.sdhtMedia]
         self.greet()
         self.fullPriceChanges(True)
+###################################################################################################################################
+    def stats(self):
+        if self.player.balance < 0:
+            for i in self.log: print("Date of transaction:" , i["date"], "| Name of share:",i["name"], "| Transaction type:", i["transType"], "| Shares involved in transaction:", i["noShares"], "| Share price of share at time of purchase:", game.formatNum(i["sharePrice"]))
+            exit("You have ran out of money! You survived " + str(self.days) + " and whent bankrupt after being charged " + str(self.formatNum(self.charge)) + "!")
+###################################################################################################################################
+    def chargePlayer(self):
+        self.charge = 40000 + rnd(-1000, 1000)
+        self.player.balance -= self.charge
 ###################################################################################################################################
     def fullPriceChanges(self, isFirst):
         oldOffers = []
@@ -42,7 +53,6 @@ class GamePlay:
 ###################################################################################################################################
     def HUD(self):
         self.clear()
-        print(self.portfolio.averagePriceCalc(self.shareList, self.portfolio.log))
         self.lines()
         diffCounter = 0
         for i in self.shareList:
@@ -65,24 +75,26 @@ class GamePlay:
 ###################################################################################################################################                
                 if choice == 1:
                     portfolioPreviewBuy = self.portfolioGen(self.buy())
-                    if self.player.balance - portfolioPreviewBuy.portfolio["noShares"] * portfolioPreviewBuy.portfolio["sharePrice"] < 0: 
+                    if self.player.balance - portfolioPreviewBuy["noShares"] * portfolioPreviewBuy["sharePrice"] < 0: 
                         print("You cant afford that!")
                         sleep(2)
                     else: 
                         self.portfolio.log.append(portfolioPreviewBuy)
-                        self.player.balance -= portfolioPreviewBuy.portfolio["noShares"] * portfolioPreviewBuy.portfolio["sharePrice"]
+                        self.player.balance -= portfolioPreviewBuy["noShares"] * portfolioPreviewBuy["sharePrice"]
 ###################################################################################################################################
                 elif choice == 2:
                     portfolioPreviewSell = self.portfolioGen(self.sell())
                     self.portfolio.log.append(portfolioPreviewSell)
-                    self.player.balance += portfolioPreviewSell.portfolio["noShares"] * portfolioPreviewSell.portfolio["sharePrice"]
+                    self.player.balance += portfolioPreviewSell["noShares"] * portfolioPreviewSell["sharePrice"]
 ###################################################################################################################################
                 elif choice == 3: 
                     for i in self.portfolio.log:
-                        print("Date of transaction:" , i.portfolio["date"], "| Name of share:",i.portfolio["name"], "| Transaction type:", i.portfolio["transType"], "| Shares involved in transaction:", i.portfolio["noShares"], "| Share price of share at time of purchase:", self.formatNum(i.portfolio["sharePrice"]))
+                        print("Date of transaction:" , i["date"], "| Name of share:",i["name"], "| Transaction type:", i["transType"], "| Shares involved in transaction:", i["noShares"], "| Share price of share at time of purchase:", self.formatNum(i["sharePrice"]))
+                    print(self.portfolio.averagePriceCalc(self.shareList, self.portfolio.log))
+                    self.stats()
                     input("Press enter to continue.")
                 else: pass
-        else: input("Please enter a valid option | Press enter to continue")
+        else: input("Please enter a valid option | Press enter to continue\n")
 ###################################################################################################################################
     def buy(self):
         self.clear()
@@ -92,8 +104,9 @@ class GamePlay:
         self.clear()
         return self.transactions("Sell", "sell")
 ###################################################################################################################################
-    def portfolioGen(self, transactions): return Portfolio(self.days,   self.shareList[transactions[0]].name,   transactions[2],    transactions[1],   self.shareList[transactions[0]].offer)
-                                            #                Days      |  Name of share                        |  Transaction Type  | Amount of shares | Offer
+    def portfolioGen(self, transactions): 
+        portfolio = {"date" : self.days, "name" : self.shareList[transactions[0]].name, "transType": transactions[2], "noShares" :  transactions[1], "sharePrice" : self.shareList[transactions[0]].offer}
+        return portfolio
 ###################################################################################################################################
     def transactions(self, transTypeCaps, transType):
         lenShareList = len(self.shareList)
@@ -123,9 +136,9 @@ class GamePlay:
     def aggregator(self, shareName):
         owned = 0
         for i in self.portfolio.log:
-            if i.portfolio["name"] == shareName:
-                if i.portfolio["transType"] == "buy": owned += i.portfolio["noShares"]
-                else: owned -= i.portfolio["noShares"]
+            if i["name"] == shareName:
+                if i["transType"] == "buy": owned += i["noShares"]
+                else: owned -= i["noShares"]
         return owned
 ###################################################################################################################################
     def avgValue(self, share):
@@ -133,12 +146,12 @@ class GamePlay:
         holderList = []
         counter = 0
         for i in self.portfolio.log:
-            if share.name == i.portfolio["name"]:
-                if i.portfolio["transType"] == "buy": counter += i.portfolio["noShares"]
-                else: counter -= i.portfolio["noShares"]    
+            if share.name == i["name"]:
+                if i["transType"] == "buy": counter += i["noShares"]
+                else: counter -= i["noShares"]    
                 holderList = []
                 toSave = ["noShares", "transType", "sharePrice"]
-                for j in range(len(toSave)): holderList.append(i.portfolio[toSave[j]])
+                for j in range(len(toSave)): holderList.append(i[toSave[j]])
                 sharesLog.append(holderList)
                 if counter == 0:
                     sharesLog = []

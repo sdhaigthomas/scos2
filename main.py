@@ -16,11 +16,8 @@ while True:
             game.HUD()
             game.fullPriceChanges(False)
 ###################################################################################################################################
-        charge = 40000 + rnd(-1000, 1000)
-        game.player.balance -= charge
+        game.days += 1
+        game.chargePlayer()
 ###################################################################################################################################
-    if game.player.balance < 0:
-        for i in game.log: print("Date of transaction:" , i.portfolio["date"], "| Name of share:",i.portfolio["name"], "| Transaction type:", i.portfolio["transType"], "| Shares involved in transaction:", i.portfolio["noShares"], "| Share price of share at time of purchase:", game.formatNum(i.portfolio["sharePrice"]))
-        exit("You have ran out of money! You survived " + str(game.days) + " and whent bankrupt after being charged " + str(game.formatNum(charge)) + "!")
-    game.days += 1
+
 ###################################################################################################################################

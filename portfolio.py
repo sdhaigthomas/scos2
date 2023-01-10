@@ -1,6 +1,6 @@
 ###################################################################################################################################
 class Portfolio:
-    def __init__(self, date, name, transType, noShares, sharePrice):
+    def __init__(self, date = None, name = None, transType = None, noShares = None, sharePrice = None):
         self.portfolio = {"date" : date, "name" : name, "transType": transType, "noShares" : noShares, "sharePrice" : sharePrice}
         self.log = []
 ###################################################################################################################################
@@ -18,30 +18,30 @@ class Portfolio:
                 trans = []
                 message = ''
                 for tr in log:
-                    if tr.portfolio["name"] == share.name:
-                        lt = tr.portfolio["noShares"]
+                    if tr["name"] == share.name:
+                        lt = tr["noShares"]
 
-                        if  tr.portfolio["transType"] == "buy":  
+                        if  tr["transType"] == "buy":  
                             cmlt = count
                             count += lt
 
-                        elif tr.portfolio["transType"] == "sell":
+                        elif tr["transType"] == "sell":
                             cmlt = count
                             count -= lt
                         if cmlt >= 0 and count > cmlt or cmlt <= 0 and count < cmlt: # if square or net long/short and a purchase/sale is made ...
-                            trans = [tr.portfolio["noShares"], tr.portfolio["sharePrice"]]
+                            trans = [tr["noShares"], tr["sharePrice"]]
                             trans_log.append(trans)
-                            message = 'net long/short and a purchase/sale has been made. ' + tr.portfolio["name"]
+                            message = 'net long/short and a purchase/sale has been made. ' + tr["name"]
                         elif cmlt > 0 and count < 0 or cmlt < 0 and count > 0: # if new transaction reverses the long/short position into a short/long position...
                             trans_log = []
-                            trans = [count, tr.portfolio["sharePrice"]]
+                            trans = [count, tr["sharePrice"]]
                             trans_log.append(trans)
-                            message = 'new transaction reverses the long/short position into a short/long position. ' + tr.portfolio["name"]
+                            message = 'new transaction reverses the long/short position into a short/long position. ' + tr["name"]
                         elif count == 0: # position is 0
                             trans_log = []
                             trans = []
-                            message = 'position is 0' + tr.portfolio["name"]
+                            message = 'position is 0' + tr["name"]
                         else: # player is long / short and a sale/purchase has been made not sufficient to reverse the position. Do nothing
                             message = 'player is long / short and a sale/purchase has been made not sufficient to reverse the position. Do nothing'
-                        print(f"{tr.portfolio['name']}. Trans_log = {trans_log}\nTrans = {trans}\n")
+                        print(f"{tr['name']}. Trans_log = {trans_log}\nTrans = {trans}\n")
                         print(message)
