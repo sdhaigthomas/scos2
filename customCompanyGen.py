@@ -43,5 +43,5 @@ class Main:
         print(final)
         print("When you have done that find 'self.shareList' you can use Ctrl+F. Find the end of the list(remember to exclude the close ]) add a comma and paste text below")
         print("self."+ varName)
-###################################################################################################################################
+###################################################################################################################################hi
 main = Main()
