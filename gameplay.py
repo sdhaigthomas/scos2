@@ -66,13 +66,12 @@ class GamePlay:
     def formatNum(self, num): return f'${num/100:,.2f}'   
 ###################################################################################################################################
     def options(self):
-        msg = "You have " + self.formatNum(self.player.balance) + " | Would you like to, Buy[1], Sell[2], Wait Until Tomorrow[Enter] or Statistics[3]\n"
+        msg = "You have " + self.formatNum(self.player.balance) + " | Would you like to: Buy[1], Sell[2],  View Portfolio[3], Statistics[4], Wait Until Tomorrow[Enter] |\n"
         choice = input(msg)
-        if choice == "1" or choice == "2" or choice == "3" or choice == "":
+        if choice in {"1","2","3","4",""}:
             if choice == "": return choice
             else:
-                choice = int(choice)
-###################################################################################################################################                
+                choice = int(choice)              
                 if choice == 1:
                     portfolioPreviewBuy = self.portfolioGen(self.buy())
                     if self.player.balance - portfolioPreviewBuy["noShares"] * portfolioPreviewBuy["sharePrice"] < 0: 
@@ -81,18 +80,20 @@ class GamePlay:
                     else: 
                         self.portfolio.log.append(portfolioPreviewBuy)
                         self.player.balance -= portfolioPreviewBuy["noShares"] * portfolioPreviewBuy["sharePrice"]
-###################################################################################################################################
                 elif choice == 2:
                     portfolioPreviewSell = self.portfolioGen(self.sell())
                     self.portfolio.log.append(portfolioPreviewSell)
                     self.player.balance += portfolioPreviewSell["noShares"] * portfolioPreviewSell["sharePrice"]
-###################################################################################################################################
-                elif choice == 3: 
+                elif choice == 3:
+                    for i in self.shareList:
+                        print("You Own: " + str(self.aggregator(i)) + " shares in  " + str(i.name))
+                    input("Press enter to continue.")
+                elif choice == 4: 
                     for i in self.portfolio.log:
                         print("Date of transaction:" , i["date"], "| Name of share:",i["name"], "| Transaction type:", i["transType"], "| Shares involved in transaction:", i["noShares"], "| Share price of share at time of purchase:", self.formatNum(i["sharePrice"]))
-                    print(self.portfolio.averagePriceCalc(self.shareList, self.portfolio.log))
+                    input("Press enter to continue\n")
+                    #print(self.portfolio.averagePriceCalc(self.shareList, self.portfolio.log))
                     self.stats()
-                    input("Press enter to continue.")
                 else: pass
         else: input("Please enter a valid option | Press enter to continue\n")
 ###################################################################################################################################
