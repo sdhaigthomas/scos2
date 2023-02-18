@@ -66,7 +66,7 @@ class GamePlay:
     def formatNum(self, num): return f'${num/100:,.2f}'   
 ###################################################################################################################################
     def options(self):
-        msg = "You have " + self.formatNum(self.player.balance) + " | Would you like to: Buy[1], Sell[2],  View Portfolio[3], Statistics[4], Wait Until Tomorrow[Enter] |\n"
+        msg = "You have " + self.formatNum(self.player.balance) + " | Would you like to: Buy[1], Sell[2], View Portfolio[3], Statistics[4], Wait Until Tomorrow[Enter] |\n"
         choice = input(msg)
         if choice in {"1","2","3","4",""}:
             if choice == "": return choice
