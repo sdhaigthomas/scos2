@@ -1,1 +1,3 @@
-gnome-terminal -- python3 ~/scos2/main.py
+BASEDIR=$(dirname "$0")
+echo "$BASEDIR"
+gnome-terminal -- python3 "$BASEDIR"/main.py
