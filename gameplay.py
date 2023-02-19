@@ -114,7 +114,7 @@ class GamePlay:
 ###################################################################################################################################
     def portfolioMenu(self):
         for i in self.shareList:
-            print("You Own: " + str(self.aggregator(i)) + " shares in  " + str(i.name))
+            print("You Own: " + str(self.aggregator(i.name)) + " shares in  " + str(i.name))
         input("Press enter to continue.")
 ###################################################################################################################################
     def transactions(self, transTypeCaps, transType):
