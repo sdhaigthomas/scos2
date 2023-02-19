@@ -11,7 +11,7 @@ git clone git@github.com:sdhaigthomas/scos2.git; chmod +x $(dirname "$0")/scos2/
 ```
 How to run:
 ```bash
-~/scos2/scos2.sh
+$(dirname "$0")/scos2/scos2.sh
 ```
 OR
 
