@@ -66,48 +66,56 @@ class GamePlay:
     def formatNum(self, num): return f'${num/100:,.2f}'   
 ###################################################################################################################################
     def options(self):
-        msg = "You have " + self.formatNum(self.player.balance) + " | Would you like to: Buy[1], Sell[2],  View Portfolio[3], Statistics[4], Wait Until Tomorrow[Enter] |\n"
+        msg = "You have " + self.formatNum(self.player.balance) + " | Would you like to: Buy[1], Sell[2], View Portfolio[3], Statistics[4], Wait Until Tomorrow[Enter] |\n"
         choice = input(msg)
         if choice in {"1","2","3","4",""}:
             if choice == "": return choice
             else:
                 choice = int(choice)              
-                if choice == 1:
-                    portfolioPreviewBuy = self.portfolioGen(self.buy())
-                    if self.player.balance - portfolioPreviewBuy["noShares"] * portfolioPreviewBuy["sharePrice"] < 0: 
-                        print("You cant afford that!")
-                        sleep(2)
-                    else: 
-                        self.portfolio.log.append(portfolioPreviewBuy)
-                        self.player.balance -= portfolioPreviewBuy["noShares"] * portfolioPreviewBuy["sharePrice"]
-                elif choice == 2:
-                    portfolioPreviewSell = self.portfolioGen(self.sell())
-                    self.portfolio.log.append(portfolioPreviewSell)
-                    self.player.balance += portfolioPreviewSell["noShares"] * portfolioPreviewSell["sharePrice"]
-                elif choice == 3:
-                    for i in self.shareList:
-                        print("You Own: " + str(self.aggregator(i)) + " shares in  " + str(i.name))
-                    input("Press enter to continue.")
-                elif choice == 4: 
-                    for i in self.portfolio.log:
-                        print("Date of transaction:" , i["date"], "| Name of share:",i["name"], "| Transaction type:", i["transType"], "| Shares involved in transaction:", i["noShares"], "| Share price of share at time of purchase:", self.formatNum(i["sharePrice"]))
-                    input("Press enter to continue\n")
-                    #print(self.portfolio.averagePriceCalc(self.shareList, self.portfolio.log))
-                    self.stats()
+                if choice == 1: self.buy()
+                elif choice == 2: self.sell()
+                elif choice == 3: self.portfolioMenu()
+                elif choice == 4: self.log()
                 else: pass
         else: input("Please enter a valid option | Press enter to continue\n")
 ###################################################################################################################################
     def buy(self):
+        portfolioPreviewBuy = self.portfolioGen(self.buyMenu())
+        if self.player.balance - portfolioPreviewBuy["noShares"] * portfolioPreviewBuy["sharePrice"] < 0: 
+            print("You cant afford that!")
+            sleep(2)
+        else: 
+            self.portfolio.log.append(portfolioPreviewBuy)
+            self.player.balance -= portfolioPreviewBuy["noShares"] * portfolioPreviewBuy["sharePrice"]
+###################################################################################################################################
+    def sell(self):
+        portfolioPreviewSell = self.portfolioGen(self.sellMenu())
+        self.portfolio.log.append(portfolioPreviewSell)
+        self.player.balance += portfolioPreviewSell["noShares"] * portfolioPreviewSell["sharePrice"]
+###################################################################################################################################
+    def log(self):
+        for i in self.portfolio.log:
+            print("Date of transaction:" , i["date"], "| Name of share:",i["name"], "| Transaction type:", i["transType"], "| Shares involved in transaction:", i["noShares"], "| Share price of share at time of purchase:", self.formatNum(i["sharePrice"]))
+        input("Press enter to continue\n")
+        #print(self.portfolio.averagePriceCalc(self.shareList, self.portfolio.log))
+        self.stats()
+###################################################################################################################################
+    def buyMenu(self):
         self.clear()
         return self.transactions("Buy", "buy")
 ###################################################################################################################################
-    def sell(self):
+    def sellMenu(self):
         self.clear()
         return self.transactions("Sell", "sell")
 ###################################################################################################################################
     def portfolioGen(self, transactions): 
         portfolio = {"date" : self.days, "name" : self.shareList[transactions[0]].name, "transType": transactions[2], "noShares" :  transactions[1], "sharePrice" : self.shareList[transactions[0]].offer}
         return portfolio
+###################################################################################################################################
+    def portfolioMenu(self):
+        for i in self.shareList:
+            print("You Own: " + str(self.aggregator(i)) + " shares in  " + str(i.name))
+        input("Press enter to continue.")
 ###################################################################################################################################
     def transactions(self, transTypeCaps, transType):
         lenShareList = len(self.shareList)
