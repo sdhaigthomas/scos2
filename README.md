@@ -4,6 +4,7 @@ How to install:
 2) git clone git@github.com:sdhaigthomas/scos2.git; chmod +x ~/scos2/scos.sh; ~/scos2/scos.sh
 
 How to run:
+
 ~/scos2/scos.sh
 
 OR
