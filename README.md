@@ -7,7 +7,7 @@ How to install:
 2)Copy and then Paste the text below into the terminal
 
 ```bash
-git clone git@github.com:sdhaigthomas/scos2.git; chmod +x $(dirname "$0")/scos2/scos.sh; $(dirname "$0")/scos2/scos2.sh
+git clone git@github.com:sdhaigthomas/scos2.git; gnome-terminal -- python3 $(dirname "$0")/main.py
 ```
 How to run:
 ```bash
