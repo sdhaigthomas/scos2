@@ -1,3 +1,1 @@
-BASEDIR=$(dirname "$0")
-echo "$BASEDIR"
-gnome-terminal -- python3 "$BASEDIR"/main.py
+gnome-terminal -- python3 $(dirname "$0")/main.py
